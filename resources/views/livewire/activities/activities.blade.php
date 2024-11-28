@@ -24,7 +24,7 @@ class extends Component {
             <flux:heading size="lg">{{$activity->activity_name}}</flux:heading>
                 <flux:subheading class="mb-2">Date: {{$activity->start_date->format('M j, g:i a')}}</flux:subheading>
                 <flux:subheading class="mb-2">Location: {{$activity->address}}</flux:subheading>
-                    <flux:button class="!bg-primary !text-white hover:!bg-primary/90" :href="route('activity.show', $activity->id)">
+                    <flux:button  class="!bg-primary !text-white hover:!bg-primary/90" :href="route('activity.show', $activity->id)">
                         View
                     </flux:button>
             </flux:card>

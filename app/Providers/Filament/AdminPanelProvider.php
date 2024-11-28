@@ -34,7 +34,6 @@ use Laravel\Jetstream\Jetstream;
 
 class AdminPanelProvider extends PanelProvider
 {
-
     public function panel(Panel $panel): Panel
     {
         $panel
@@ -45,7 +44,6 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
-            ->registration()
             ->darkMode(false)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -56,7 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                UsersStats::class,
+//                UsersStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -71,7 +69,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 EnsureHasTeam::class,
-                Authenticate::class,
+                Authenticate::class
             ])
             ->userMenuItems([
                 MenuItem::make()
@@ -116,6 +114,7 @@ class AdminPanelProvider extends PanelProvider
         /**
          * Listen and switch team if tenant was changed
          */
+
         Event::listen(
             TenantSet::class,
             SwitchTeam::class,
@@ -124,7 +123,6 @@ class AdminPanelProvider extends PanelProvider
 
     public function shouldRegisterMenuItem(): bool
     {
-        //        $hasVerifiedEmail = auth()->user()?->hasVerifiedEmail();
         return Filament::hasTenancy() && Filament::getTenant();
     }
 }

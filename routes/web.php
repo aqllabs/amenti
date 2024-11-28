@@ -63,11 +63,6 @@ Route::middleware([
         Route::get('error', [StripeController::class, 'error'])->name('error');
         Route::get('billing', [StripeController::class, 'billing'])->name('billing'); // Redirects to Customer Portal
     });
-
-    Route::get('/manage-availability', function () {
-        return view('manage-availability');
-    })->name('manage-availability');
-
     Route::middleware([Subscribed::class])->group(function () {
         // Add endpoints that are only for subscribed users
     });
@@ -84,6 +79,7 @@ Route::middleware([
 
     Volt::route('academy', 'academy.academy')
         ->middleware(['auth'])
+
         ->name('academy.index');
 
     Volt::route('academy/{course}', 'academy.course')
@@ -95,6 +91,8 @@ Route::middleware([
         ->name('academy.lesson.show');
 
     Volt::route('/ai-chat', 'ai-chat')->name('ai-chat');
+
+    Volt::route('/manage-availability', 'meetings/manage-availability')->name('manage-availability');
 });
 
 // Demo Coming Soon Page

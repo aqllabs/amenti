@@ -5,6 +5,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\ActivityResource\Pages;
 use App\Filament\App\Resources\ActivityResource\RelationManagers\AttendeesRelationManager;
 use App\Models\Activity;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;

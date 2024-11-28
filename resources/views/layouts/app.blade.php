@@ -1,3 +1,4 @@
+@php use Filament\Facades\Filament; @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -56,7 +57,6 @@
                     <flux:button icon-trailing="chevron-up-down" size="sm" variant="subtle" class="flex justify-between">
                         {{ Auth::user()->currentTeam->name }}
                     </flux:button>
-
                     <flux:menu>
                         <flux:menu.group heading="Team Management">
                             <flux:menu.item icon="cog-6-tooth" href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
@@ -88,10 +88,6 @@
 
                 <flux:menu>
                     <flux:menu.item icon="user" href="{{ route('profile.show') }}">{{ __('Profile') }}</flux:menu.item>
-                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                        <flux:menu.item icon="key" href="{{ route('api-tokens.index') }}">{{ __('API Tokens') }}</flux:menu.item>
-                    @endif
-                    <flux:menu.separator />
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <flux:menu.item icon="arrow-right-start-on-rectangle" as="button" type="submit">
@@ -109,23 +105,30 @@
             <flux:spacer />
 
             <flux:dropdown position="top" alignt="start">
-                <flux:profile avatar="https://fluxui.dev/img/demo/user.png" />
+                <flux:profile
+                    avatar="{{ Laravel\Jetstream\Jetstream::managesProfilePhotos() ? Auth::user()->profile_photo_url : '' }}"
+                    name="{{ Auth::user()->name }}"
+                />
 
                 <flux:menu>
-                    <flux:menu.radio.group>
-                        <flux:menu.radio checked>Olivia Martin</flux:menu.radio>
-                        <flux:menu.radio>Truly Delta</flux:menu.radio>
-                    </flux:menu.radio.group>
-
+                    <flux:menu.item icon="user" href="{{ route('profile.show') }}">{{ __('Profile') }}</flux:menu.item>
                     <flux:menu.separator />
-
-                    <flux:menu.item icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <flux:menu.item icon="arrow-right-start-on-rectangle" as="button" type="submit">
+                            {{ __('Log Out') }}
+                        </flux:menu.item>
+                    </form>
                 </flux:menu>
             </flux:dropdown>
+
+
         </flux:header>
         <flux:main class="bg-base-100">
             {{ $slot }}
         </flux:main>
+        <flux:toast />
+
 
         @stack('modals')
 

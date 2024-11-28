@@ -42,14 +42,16 @@ class extends Component
             Nothing to show yet
         @endif
         @foreach ($submittedForms as $myForm )
-            <div :title="$myForm->title" class="">
-                <p>Submitted on {{$myForm->pivot->created_at->toDateString()}}</p>
-{{--                <x-slot:actions>--}}
-{{--                    <flux:button label="View" class="btn-primary" :link="route('form.show', $myForm)" />--}}
-{{--                </x-slot:actions>--}}
+        <flux:card class="flex flex-col space-y-2">
+            <flux:heading size="lg">{{$myForm->title}}</flux:heading>
+            <flux:subheading size="sm">{{$myForm->description}}</flux:subheading>
+             <div class="flex items-center gap-2">
+                <flux:icon.check-circle variant="micro" class="text-green-600 dark:text-green-500" />
+                <span class="text-sm text-green-600 dark:text-green-500">Submitted on {{$myForm->pivot->created_at->toDateString()}}</span>
             </div>
+            <flux:button :href="route('form.show', $myForm)"  class="!btn !btn-primary !text-white w-full">View Form</flux:button>
+        </flux:card>
         @endforeach
-
     </grid>
 
 </div>

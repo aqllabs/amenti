@@ -6,7 +6,9 @@ use App\Filament\Pages\CreateTeam;
 use App\Filament\Pages\EditProfile;
 use App\Filament\Pages\EditTeam;
 use App\Http\Middleware\EnsureHasTeam;
+use App\Listeners\SwitchTeam;
 use App\Models\Team;
+use Filament\Events\TenantSet;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -23,18 +25,22 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Event;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Jetstream\Features;
+use Laravel\Fortify\Fortify;
+use Laravel\Jetstream\Jetstream;
 
 class AppPanelProvider extends PanelProvider
 {
-
-
+    /**
+     * @throws \Exception
+     */
     public function panel(Panel $panel): Panel
     {
         $panel
             ->id('app')
             ->path('app')
+            ->login()
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -45,8 +51,8 @@ class AppPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-            ])
+                //                Widgets\AccountWidget::class,
+            ])->tenant(Team::class)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -59,8 +65,8 @@ class AppPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
+                EnsureHasTeam::class,
                 Authenticate::class,
-                EnsureHasTeam::class
             ])
             ->userMenuItems([
                 MenuItem::make()
@@ -69,23 +75,28 @@ class AppPanelProvider extends PanelProvider
                     ->url(fn() => $this->shouldRegisterMenuItem()
                         ? url(EditProfile::getUrl())
                         : url($panel->getPath())),
+            ])
+            ->tenantRegistration(CreateTeam::class)
+            ->tenantProfile(EditTeam::class)
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Team Settings')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->url(fn() => $this->shouldRegisterMenuItem()
+                        ? url(EditTeam::getUrl())
+                        : url($panel->getPath())),
             ]);
 
-        if (Features::hasTeamFeatures()) {
-            $panel
-                ->tenant(Team::class)
-                ->tenantRegistration(CreateTeam::class)
-                ->tenantProfile(EditTeam::class)
-                ->userMenuItems([
-                    MenuItem::make()
-                        ->label('Team Settings')
-                        ->icon('heroicon-o-cog-6-tooth')
-                        ->url(fn() => $this->shouldRegisterMenuItem()
-                            ? url(EditTeam::getUrl())
-                            : url($panel->getPath())),
-                ]);
-        }
+
         return $panel;
+    }
+
+    public function boot()
+    {
+        Event::listen(
+            TenantSet::class,
+            SwitchTeam::class,
+        );
     }
 
     public function shouldRegisterMenuItem(): bool

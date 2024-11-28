@@ -34,7 +34,7 @@ class extends Component {
             </div>
         @endforeach
 
-       <div class="shadow-lg rounded-lg p-6 bg-white col-span-2">
+       {{-- <div class="shadow-lg rounded-lg p-6 bg-white col-span-2">
             <flux:heading size="xl" class="mb-4">Goals</flux:heading>
             <div class="space-y-4">
                 <div class="flex items-center">
@@ -51,7 +51,7 @@ class extends Component {
                 </div>
             </div>
             <flux:button class="!bg-primary !text-white hover:!bg-primary/90">View All Goals</flux:button>
-        </div>
+        </div> --}}
     </div>
     <flux:heading size="xl" class="mb-4">Upcoming Activities</flux:heading>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">

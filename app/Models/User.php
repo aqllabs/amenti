@@ -104,7 +104,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
             return $this->email === 'mentorshiphk@gmail.com';
         }
 
-        return $this->is_admin || $this->hasRole('admin');
+        return $this->hasRole('admin');
     }
 
     public function trialIsUsed()
@@ -121,10 +121,15 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return $this->allTeams();
     }
-    //    current tenant
     public function team()
     {
-        return $this->teams()->where('team_id', Filament::getTenant()->id);
+        // Get current tenant safely with null check
+        $tenant = Filament::getTenant();
+
+        // Get the authenticated user instance
+        $user = Auth::user();
+
+        return $user->teams()->where('team_id', $tenant->id);
     }
 
     public function activities()

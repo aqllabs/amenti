@@ -18,6 +18,9 @@ return new class extends Migration
             $table->json('responses');
             $table->string('status')->default('submitted');
             $table->timestamps();
+
+            $table->unsignedBigInteger('team_id')->nullable();
+            $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 

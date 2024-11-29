@@ -15,7 +15,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 
 class UserResource extends Resource
@@ -49,7 +48,7 @@ class UserResource extends Resource
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn(string $context): bool => $context === 'create'),
-                Forms\Components\Select::make('role')->options(Role::all()->pluck('name', 'name'))->required(),
+//                Forms\Components\Select::make('role')->options(Role::all()->pluck('name', 'name'))->required(),
             ]);
     }
 
@@ -91,8 +90,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RoleRelationManager::class,
-            PermissionRelationManager::class,
+            //
         ];
     }
 

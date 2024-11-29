@@ -7,38 +7,83 @@ use Filament\Forms\Form;
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
 use App\Models\Activity;
+use App\Models\ActivityAttendance;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Support\Facades\Auth;
 
-new #[Layout('layouts.app')]
-class extends Component implements HasForms {
+new #[Layout('layouts.app')] class extends Component implements HasForms {
+    use InteractsWithForms;
 
     public Activity $activity;
     public bool $showFeedbackForm = false;
-
-    use InteractsWithForms;
-
     public ?array $data = [];
+    public ?string $userStatus = null;
+
+    public function mount(Activity $activity)
+    {
+        $this->activity = $activity;
+        $this->loadUserStatus();
+    }
+
+    public function loadUserStatus()
+    {
+        $attendance = $this->activity->attendances()
+            ->where('user_id', Auth::id())
+            ->first();
+        
+        $this->userStatus = $attendance ? $attendance->status : 'Not Responded';
+    }
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Textarea::make('user_feedback')->label('Feedback'),
-                Select::make('rating')->options([
-                    1 => '1',
-                    2 => '2',
-                    3 => '3',
-                    4 => '4',
-                    5 => '5',
-                ])->label('Rating'),
+                Textarea::make('user_feedback')
+                    ->label('Feedback')
+                    ->required(),
+                Select::make('rating')
+                    ->options([
+                        1 => '1 - Poor',
+                        2 => '2 - Fair',
+                        3 => '3 - Good',
+                        4 => '4 - Very Good',
+                        5 => '5 - Excellent',
+                    ])
+                    ->label('Rating')
+                    ->required(),
             ])
             ->statePath('data');
     }
 
-
-    public function mount(Activity $activity)
+    public function rsvpYes()
     {
-        $this->activity = $activity;
+        $this->activity->attendances()->updateOrCreate(
+            ['user_id' => Auth::id()],
+            ['status' => 'ACCEPTED']
+        );
+        $this->loadUserStatus();
+    }
+
+    public function rsvpNo()
+    {
+        $this->activity->attendances()->updateOrCreate(
+            ['user_id' => Auth::id()],
+            ['status' => 'REJECTED']
+        );
+        $this->loadUserStatus();
+    }
+
+    public function submitFeedback()
+    {
+        $this->activity->attendances()
+            ->where('user_id', Auth::id())
+            ->update([
+                'feedback' => $this->data['user_feedback'],
+                'rating' => $this->data['rating']
+            ]);
+
+        $this->showFeedbackForm = false;
+        $this->dispatch('feedback-submitted');
     }
 }; ?>
 
@@ -49,14 +94,19 @@ class extends Component implements HasForms {
                 <flux:heading size="lg">{{$activity->activity_name}}</flux:heading>
                 <p class="text-gray-600 mt-2">{{ $activity->description }}</p>
             </div>
-            <div class="px-4 py-2 rounded-full bg-gray-100">
-                Your Status: Not Responded
+            <div class="px-4 py-2 rounded-full {{ 
+                $userStatus === 'ACCEPTED' ? 'bg-green-100' : 
+                ($userStatus === 'REJECTED' ? 'bg-red-100' : 
+                ($userStatus === 'ATTENDED' ? 'bg-blue-100' : 
+                ($userStatus === 'NOSHOW' ? 'bg-yellow-100' : 'bg-gray-100'))) 
+            }}">
+                Status: {{ $userStatus }}
             </div>
         </div>
 
-        @if($activity->image_url)
+        @if($activity->image_urls)
             <div class="mb-6">
-                <img src="{{ $activity->image_url }}" 
+                <img src="{{ $activity->image_urls }}" 
                      alt="{{ $activity->activity_name }}" 
                      class="w-full h-64 object-cover rounded-lg">
             </div>
@@ -79,51 +129,75 @@ class extends Component implements HasForms {
             </div>
         </div>
 
-        <div class="border-t border-b py-6 my-6">
-            <div class="text-center mb-4">
-                <flux:heading >Will you join this activity?</flux:heading>
-                <p class="text-gray-600">12 spots remaining</p>
+        @if($userStatus === 'ACCEPTED')
+            <div class="border-t border-b py-6 my-6">
+                <div class="text-center mb-4">
+                    <flux:heading>Change your response?</flux:heading>
+                </div>
+                <div class="flex justify-center">
+                    <button wire:click="rsvpNo" class="btn border-2 border-gray-300 hover:bg-gray-50">
+                        <flux:icon.x-mark class="mr-2"/> Cancel my attendance
+                    </button>
+                </div>
             </div>
-            <div class="flex justify-center space-x-4">
-                <button wire:click="rsvpYes" class="btn bg-primary !text-white hover:bg-primary/90 min-w-[120px]">
-                    <flux:icon.check class="mr-2"/> I'll Attend
-                </button>
-                <button wire:click="rsvpNo" class="btn border-2 border-gray-300 hover:bg-gray-50 min-w-[120px]">
-                    <flux:icon.x-mark class="mr-2"/> Decline
-                </button>
+        @elseif($userStatus === 'REJECTED')
+            <div class="border-t border-b py-6 my-6">
+                <div class="text-center mb-4">
+                    <flux:heading>Change your response?</flux:heading>
+                    <p class="text-gray-600">Duration: {{ $activity->duration }} hours</p>
+                </div>
+                <div class="flex justify-center">
+                    <button wire:click="rsvpYes" class="btn bg-primary !text-white hover:bg-primary/90">
+                        <flux:icon.check class="mr-2"/> I'd like to attend
+                    </button>
+                </div>
             </div>
-        </div>
+        @elseif($userStatus !== 'ATTENDED' && $userStatus !== 'NOSHOW')
+            <div class="border-t border-b py-6 my-6">
+                <div class="text-center mb-4">
+                    <flux:heading>Will you join this activity?</flux:heading>
+                    <p class="text-gray-600">Duration: {{ $activity->duration }} hours</p>
+                </div>
+                <div class="flex justify-center space-x-4">
+                    <button wire:click="rsvpYes" class="btn bg-primary !text-white hover:bg-primary/90 min-w-[120px]">
+                        <flux:icon.check class="mr-2"/> I'll Attend
+                    </button>
+                    <button wire:click="rsvpNo" class="btn border-2 border-gray-300 hover:bg-gray-50 min-w-[120px]">
+                        <flux:icon.x-mark class="mr-2"/> Decline
+                    </button>
+                </div>
+            </div>
+        @endif
     </flux:card>
 
     <flux:card class="mb-6">
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
                 <flux:icon.users variant="solid" class="mr-2"/>
-                <flux:heading >Attendees (4)</flux:heading>
-            </div>
-            <div class="text-sm text-gray-600">
-                Max Capacity: 16
+                <flux:heading>Attendees ({{ $activity->attendees()->whereIn('status', ['ACCEPTED', 'ATTENDED'])->count() }})</flux:heading>
             </div>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            @foreach(['John Doe', 'Jane Smith', 'Michael Johnson', 'Emily Davis'] as $attendee)
+            @foreach($activity->attendees()->whereIn('status', ['ACCEPTED', 'ATTENDED'])->get() as $attendee)
                 <div class="flex items-center">
-                    <div class="w-8 h-8 rounded-full bg-gray-200 mr-2"></div>
-                    <span>{{ $attendee }}</span>
+                    <img src="{{ $attendee->profile_photo_url }}" 
+                         class="w-8 h-8 rounded-full mr-2"
+                         alt="{{ $attendee->name }}">
+                    <span>{{ $attendee->name }}</span>
                 </div>
             @endforeach
         </div>
     </flux:card>
 
-    @if($showFeedbackForm)
+    {{-- @if($showFeedbackForm && $userStatus === 'ACCEPTED') --}}
         <flux:card class="mb-6">
-            <flux:heading size="sm" class="mb-4">Share Your Feedback</flux:heading>
-            <form wire:submit.prevent="submitFeedback" class="space-y-4">
-                {{$this->form}}
+            <flux:heading size="lg" class="mb-4">Share Your Feedback</flux:heading>
+            <form wire:submit="submitFeedback" class="space-y-4">
+                {{ $this->form }}
                 <button type="submit" class="btn bg-primary !text-white hover:bg-primary/90">
                     Submit Feedback
                 </button> 
             </form>
         </flux:card>
-    @endif
+    {{-- @endif --}}
 </div>

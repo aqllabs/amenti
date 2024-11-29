@@ -30,6 +30,7 @@ class AttendeesRelationManager extends RelationManager
                         ]
                     )
                     ->required(),
+
             ]);
     }
 
@@ -40,7 +41,20 @@ class AttendeesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\TextColumn::make('user.email'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options(
+                        [
+                            'ATTENDED' => 'ATTENDED',
+                            'ACCEPTED' => 'ACCEPTED',
+                            'NOSHOW' => 'NOSHOW',
+                            'REJECTED' => 'REJECTED'
+                        ]
+                    ),
+                Tables\Columns\TextColumn::make('feedback')
+                    ->label('Feedback')
+                    ->searchable(),
+                Tables\Columns\TextInputColumn::make('admin_feedback')
+                    ->label('Admin Feedback')
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')->options(

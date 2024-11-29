@@ -38,7 +38,7 @@ class Activity extends Model
     public function attendees()
     {
         return $this->belongsToMany(User::class, 'activity_attendances')
-            ->withPivot('created_at', 'status', 'admin_feedback')
+            ->withPivot(['status', 'admin_feedback', 'created_at'])
             ->withTimestamps();
     }
 
@@ -46,11 +46,7 @@ class Activity extends Model
     //hasmay with the users columns
     public function attendances()
     {
-        return $this->hasMany(ActivityAttendance::class)->with([
-            'user' => function ($query) {
-                $query->select('id', 'name', 'email');
-            }
-        ]);
+        return $this->hasMany(ActivityAttendance::class);
     }
 
     public function team()

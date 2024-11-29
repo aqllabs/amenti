@@ -61,6 +61,11 @@ class ActivityResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('address'),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options([
+                        'DRAFT' => 'DRAFT', 'ACTIVE' => 'ACTIVE', 'CANCELLED' => 'CANCELLED', 'DELETED' => 'DELETED'
+                    ])
+                    ->sortable(),
             ])
             ->filters([
                 //

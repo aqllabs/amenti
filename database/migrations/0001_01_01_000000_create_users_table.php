@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->boolean('trial_is_used')->default(false);
+            $table->foreignId('parent_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('user_type')->default('user');
             $table->timestamps();
         });
 

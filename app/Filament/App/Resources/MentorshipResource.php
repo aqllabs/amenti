@@ -22,9 +22,19 @@ class MentorshipResource extends Resource
     {
         return $form
             ->schema([
-                //get users from the team that have role mentor
-                Forms\Components\Select::make('mentor_id')->options(User::role('mentor')->get()),
-                Forms\Components\Select::make('mentee_id')->options(User::role('mentee')->get()),
+                Forms\Components\Select::make('mentor_id')
+                    ->label('Mentor')
+                    ->options(User::where('user_type', 'mentor')->pluck('name', 'id'))
+                    ->required()
+                    ->searchable()
+                    ->preload(),
+
+                Forms\Components\Select::make('mentee_id')
+                    ->label('Mentee')
+                    ->options(User::where('user_type', 'mentee')->pluck('name', 'id'))
+                    ->required()
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 

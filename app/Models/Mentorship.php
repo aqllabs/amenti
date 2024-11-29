@@ -13,8 +13,8 @@ class Mentorship extends Model
     protected $fillable = [
         'mentor_id',
         'mentee_id',
+        'status',
     ];
-
 
     public function mentor(): BelongsTo
     {

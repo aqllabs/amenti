@@ -25,17 +25,14 @@ use Exception;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasPermissions;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable implements FilamentUser, HasTenants
 {
     use Billable;
     use HasApiTokens;
     use HasFactory;
-    use HasPermissions;
     use HasProfilePhoto;
-    use HasRoles;
     use HasNoPersonalTeam, HasTeams {
         HasNoPersonalTeam::ownsTeam insteadof HasTeams;
         HasNoPersonalTeam::isCurrentTeam insteadof HasTeams;
@@ -53,6 +50,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'name',
         'email',
         'password',
+        'user_type',
     ];
 
     /**
@@ -101,10 +99,10 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         //        return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
 
         if ($panel->getId() === 'admin') {
-            return $this->email === 'mentorshiphk@gmail.com';
+            return $this->email === 'mentorshiphk@gmail.com' || $this->user_type === 'admin';
         }
 
-        return $this->hasRole('admin');
+        return true;
     }
 
     public function trialIsUsed()
@@ -139,6 +137,11 @@ class User extends Authenticatable implements FilamentUser, HasTenants
             ->withTimestamps();
     }
 
+    public function activityAttendances()
+    {
+        return $this->hasMany(ActivityAttendance::class);
+    }
+
     public function meetings()
     {
         return $this->belongsToMany(Meeting::class, 'meeting_attendances')
@@ -159,7 +162,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     public function mentees()
     {
         return $this->belongsToMany(User::class, 'mentorships', 'mentor_id', 'mentee_id')
-            ->withPivot('role', 'relationship_type')
             ->withTimestamps();
     }
 
@@ -270,5 +272,15 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     public function availabilities(): HasMany
     {
         return $this->hasMany(Availability::class);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(User::class, 'parent_id');
     }
 }

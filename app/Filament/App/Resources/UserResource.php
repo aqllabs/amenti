@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Jetstream\Jetstream;
-use Spatie\Permission\Models\Role;
+use Filament\Forms\Components\Select;
 
 class UserResource extends Resource
 {
@@ -44,7 +44,22 @@ class UserResource extends Resource
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn(string $context): bool => $context === 'create'),
-                Forms\Components\Select::make('role')->options(Role::all()->pluck('name', 'name'))->required(),
+                //                Forms\Components\Select::make('role')->options(Role::all()->pluck('name', 'name'))->required(),
+                Select::make('role')
+                    ->options([
+                        'admin' => 'Administrator',
+                        'mentor' => 'Mentor',
+                        'mentee' => 'Mentee',
+                        'parent' => 'Parent',
+                    ])
+                    ->required()
+                    ->label('Team Role'),
+                Select::make("parent_id")
+                    ->label('Parent')
+                    ->options(User::where('user_type', 'parent')->pluck('name', 'id'))
+                    ->hidden(fn($record) => $record->user_type !== 'mentee')
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 
@@ -56,32 +71,24 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                //get the name of team with that id
-                Tables\Columns\TextColumn::make('current_team_id'),
-                //                Tables\Columns\IconColumn::make('trial_is_used')
-                //                    ->sortable()
-                //                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_admin')
-                    ->sortable()
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('user_type')
+                    ->label('Team Role'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable(),
-                //                Tables\Columns\TextColumn::make('stripe_id')
-                //                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->headerActions([
-            ])
+            ->headerActions([])
             ->defaultSort('created_at', 'desc');
     }
 

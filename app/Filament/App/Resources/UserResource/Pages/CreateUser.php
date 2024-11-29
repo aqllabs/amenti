@@ -21,14 +21,15 @@ class CreateUser extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-            return $data;
+        return $data;
     }
-    protected function afterCreate()
+    protected function afterCreate(): void
     {
-        $createdUser = $this->getRecord();
-        $data = $this->data;
+        $user = $this->getRecord();
         $team = Filament::getTenant();
-        $team->users()->updateExistingPivot($createdUser->id, ['role' => $data['role']]);
-
+        $team->users()->updateExistingPivot($user->id, ['role' => $this->data['role'] ?? 'mentee']);
+        //update the user type in the user table
+        $user->user_type = $this->data['role'] ?? 'mentee';
+        $user->save();
     }
 }

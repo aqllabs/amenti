@@ -14,6 +14,7 @@ new #[Layout('layouts.app')]
 class extends Component implements HasForms {
 
     public Meeting $meeting;
+    public $attendance;
     use InteractsWithForms;
 
     public ?array $data = [];
@@ -37,6 +38,31 @@ class extends Component implements HasForms {
     public function mount(Meeting $meeting)
     {
         $this->meeting = $meeting;
+        $this->attendance = $meeting->attendances()->where('user_id', auth()->id())->first();
+        $this->data = [
+            'rating' => $this->attendance?->rating,
+            'user_feedback' => $this->attendance?->feedback,
+        ];
+    }
+
+    public function updateAttendance($status)
+    {
+        $this->meeting->attendances()->updateOrCreate(
+            ['user_id' => auth()->id()],
+            ['status' => $status]
+        );
+        $this->attendance = $this->meeting->attendances()->where('user_id', auth()->id())->first();
+    }
+
+    public function submitFeedback()
+    {
+        $this->meeting->attendances()->updateOrCreate(
+            ['user_id' => auth()->id()],
+            [
+                'rating' => $this->data['rating'],
+                'feedback' => $this->data['user_feedback']
+            ]
+        );
     }
 }; ?>
 
@@ -54,27 +80,48 @@ class extends Component implements HasForms {
                 <flux:icon.map-pin class="mr-2"/>
                 <flux:subheading>{{ $meeting->address }}</flux:subheading>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center mb-4">
+                <flux:icon.camera class="mr-2"/>
+                <flux:subheading>Format: {{ $meeting->format }}</flux:subheading>
+            </div>
+            <div class="flex items-center mb-4">
                 <flux:icon.user variant="solid" class="mr-2"/>
-                <flux:subheading>Dr. John</flux:subheading>
+                <flux:subheading>Host: {{ $meeting->createdBy?->name }}</flux:subheading>
+            </div>
+            <div class="mb-4">
+                <flux:badge color="{{ $attendance?->status === 'ATTENDED' ? 'success' : ($attendance?->status === 'ACCEPTED' ? 'green' : 'yellow') }}">
+                    Status: {{ $attendance?->status ?? 'Not Responded' }}
+                </flux:badge>
             </div>
         </div>
         <div class="flex my-6 space-x-6 items-center">
-            <button class="btn bg-primary !text-white hover:bg-primary/90">
-                Join Meeting
-            </button>
-            <button class="btn btn-error hover:bg-secondary/90">
-                Cancel Attendance
-            </button>
+            @if(!$attendance || in_array($attendance->status, ['INVITED', 'REJECTED']))
+                <button wire:click="updateAttendance('ACCEPTED')" class="btn bg-primary !text-white hover:bg-primary/90">
+                    Accept Invitation
+                </button>
+            @endif
+
+            @if($attendance?->status === 'ACCEPTED')
+                @if($meeting->format === 'ONLINE')
+                    <a href="#" class="btn bg-success !text-white hover:bg-success/90">
+                        Join Meeting
+                    </a>
+                @endif
+                <button wire:click="updateAttendance('REJECTED')" class="btn btn-error hover:bg-secondary/90">
+                    Cancel Attendance
+                </button>
+            @endif
         </div>
     </flux:card>
 
-    <flux:card class="mb-6">
-        <form class="space-y-4">
-            {{$this->form}}
-            <button class="btn bg-primary !text-white hover:bg-primary/90">
-                Submit Feedback
-            </button> 
-        </form>
-    </flux:card>
+    @if($attendance?->status === 'ATTENDED')
+        <flux:card class="mb-6">
+            <form wire:submit="submitFeedback" class="space-y-4">
+                {{$this->form}}
+                <button type="submit" class="btn bg-primary !text-white hover:bg-primary/90">
+                    Submit Feedback
+                </button> 
+            </form>
+        </flux:card>
+    @endif
 </div>

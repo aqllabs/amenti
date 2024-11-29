@@ -32,6 +32,7 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.item icon="home" wire:navigate href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">Home</flux:navlist.item>
+                <flux:navlist.item icon="users" wire:navigate href="{{ route('mentorship.dashboard') }}" :current="request()->routeIs('mentorship.*')">Mentorship</flux:navlist.item>
                 <flux:navlist.item icon="calendar" wire:navigate href="{{ route('activities.index') }}" :current="request()->routeIs('activities.index')">Activities</flux:navlist.item>
                 <flux:navlist.item icon="chat-bubble-left-right" wire:navigate href="{{ route('meetings') }}" :current="request()->routeIs('meetings')">Meetings</flux:navlist.item>
                 <flux:navlist.item icon="document-text" wire:navigate href="{{ route('forms') }}" :current="request()->routeIs('forms')">Forms</flux:navlist.item>

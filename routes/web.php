@@ -13,7 +13,9 @@ use App\Http\Middleware\Subscribed;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 Route::get('sitemap', [SitemapController::class, 'index'])->name('sitemap');
 
 // Demo Coming Soon Page
@@ -93,6 +95,9 @@ Route::middleware([
     Volt::route('/ai-chat', 'ai-chat')->name('ai-chat');
 
     Volt::route('/manage-availability', 'meetings/manage-availability')->name('manage-availability');
+
+    Volt::route('/mentorship', 'mentorship/mentorship-dashboard')->name('mentorship.dashboard');
+    Volt::route('/mentorship/{user}', 'mentorship/mentorship-detail')->name('mentorship.detail');
 });
 
 // Demo Coming Soon Page

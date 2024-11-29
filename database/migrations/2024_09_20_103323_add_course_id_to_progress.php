@@ -15,16 +15,6 @@ return new class extends Migration {
             $table->unsignedBigInteger('course_id')->nullable();
         });
 
-        // Step 2: Populate course_id based on existing relationships
-        DB::statement('
-            UPDATE user_lesson_progress
-            SET course_id = (
-                SELECT course_id
-                FROM lessons
-                WHERE lessons.id = user_lesson_progress.lesson_id
-            )
-        ');
-
         // Step 3: Add non-null constraint and foreign key
         Schema::table('user_lesson_progress', function (Blueprint $table) {
             $table->unsignedBigInteger('course_id')->nullable(false)->change();

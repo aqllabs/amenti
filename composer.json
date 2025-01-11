@@ -8,6 +8,7 @@
         "php": "^8.2",
         "cviebrock/eloquent-sluggable": "^11.0",
         "filament/filament": "^3.2",
+        "guava/calendar": "^1.11",
         "jantinnerezo/livewire-alert": "^3.0",
         "laravel/cashier": "^15.3",
         "laravel/framework": "^11.0",
@@ -16,9 +17,11 @@
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.9",
+        "livewire/flux": "^1.1",
         "livewire/flux-pro": "^1.0",
         "livewire/livewire": "^3.0",
         "livewire/volt": "^1.6",
+        "saade/filament-fullcalendar": "^3.0",
         "sentry/sentry-laravel": "^4.4",
         "spatie/browsershot": "^4.0",
         "spatie/image": "^3.5",
@@ -26,6 +29,7 @@
         "spatie/schema-org": "^3.23"
     },
     "require-dev": {
+        "aaronfrancis/solo": "^0.2.2",
         "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
         "laravel/envoy": "^2.9",

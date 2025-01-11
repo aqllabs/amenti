@@ -5,3 +5,17 @@
 [x-cloak] {
     display: none;
 }
+
+@layer base {
+    :root {
+        --color-accent: var(--color-green-600);
+        --color-accent-content: var(--color-green-600);
+        --color-accent-foreground: var(--color-white);
+    }
+
+    .dark {
+        --color-accent: var(--color-green-600);
+        --color-accent-content: var(--color-green-400);
+        --color-accent-foreground: var(--color-white);
+    }
+}

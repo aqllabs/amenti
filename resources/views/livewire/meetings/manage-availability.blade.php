@@ -42,7 +42,7 @@ class extends Component implements HasForms
                                 }
                                 return $slots;
                             })
-                            ->columns(3)``
+                            ->columns(3)
                             ->required()
                     ])
                     ->columns(2)
@@ -66,12 +66,12 @@ class extends Component implements HasForms
                 $end_time = date('Y-m-d H:i:s', strtotime($start_time . ' +1 hour'));
 
                 info($start_time . ' - ' . $end_time);
-                //Availability::create([
-                //    'user_id' => auth()->id(),
-                //    'date' => $slot['date'],
-                //    'start_time' => $start_time,
-                //    'end_time' => $end_time,
-                //]);
+                Availability::create([
+                    'user_id' => auth()->id(),
+                    'date' => $slot['date'],
+                    'start_time' => $start_time,
+                    'end_time' => $end_time,
+                ]);
             }
         }
 
@@ -94,5 +94,8 @@ class extends Component implements HasForms
             </div>
         </form>
     </flux:card>
+    <div class="h-full">
+        @livewire(App\Livewire\MyCalendarWidget::class)
+    </div>
 
 </div>

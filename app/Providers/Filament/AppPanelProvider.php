@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
+use App\Http\Middleware\ApplyTenantScopes;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -64,6 +65,9 @@ class AppPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->tenantMiddleware([
+                // ApplyTenantScopes::class,
+            ], isPersistent: true)
             ->authMiddleware([
                 EnsureHasTeam::class,
                 Authenticate::class,

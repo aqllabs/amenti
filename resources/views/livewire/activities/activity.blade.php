@@ -11,7 +11,8 @@ use App\Models\ActivityAttendance;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 
-new #[Layout('layouts.app')] class extends Component implements HasForms {
+new #[Layout('layouts.app')] 
+class extends Component implements HasForms {
     use InteractsWithForms;
 
     public Activity $activity;
@@ -94,14 +95,14 @@ new #[Layout('layouts.app')] class extends Component implements HasForms {
                 <flux:heading size="lg">{{$activity->activity_name}}</flux:heading>
                 <p class="text-gray-600 mt-2">{{ $activity->description }}</p>
             </div>
-            <div class="px-4 py-2 rounded-full {{ 
-                $userStatus === 'ACCEPTED' ? 'bg-green-100' : 
-                ($userStatus === 'REJECTED' ? 'bg-red-100' : 
-                ($userStatus === 'ATTENDED' ? 'bg-blue-100' : 
-                ($userStatus === 'NOSHOW' ? 'bg-yellow-100' : 'bg-gray-100'))) 
-            }}">
+            <flux:badge class="px-4 py-2 rounded-full" 
+            color="{{ $userStatus === 'ACCEPTED' ? 'green' : 
+                ($userStatus === 'REJECTED' ? 'red' : 
+                ($userStatus === 'ATTENDED' ? 'blue' : 
+                ($userStatus === 'NOSHOW' ? 'yellow' : 'gray'))) }}"
+            >
                 Status: {{ $userStatus }}
-            </div>
+            </flux:badge>
         </div>
 
         @if($activity->image_urls)
@@ -112,51 +113,51 @@ new #[Layout('layouts.app')] class extends Component implements HasForms {
             </div>
         @endif
 
-        <div class="grid md:grid-cols-2 gap-4 mb-6">
-            <div class="flex items-center">
+        <div class="grid md:grid-cols-3 grid-cols-1 gap-4 mb-6 w-full">
+            <div class="flex items-center justify-center">
                 <flux:icon.calendar class="mr-2 text-primary"/>
                 <div>
                     <div class="text-sm text-gray-600">Date & Time</div>
                     <flux:subheading>{{$activity->start_date->format('M j, g:i a')}}</flux:subheading>
                 </div>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center justify-center">
                 <flux:icon.map-pin class="mr-2 text-primary"/>
                 <div>
                     <div class="text-sm text-gray-600">Location</div>
                     <flux:subheading>{{ $activity->address }}</flux:subheading>
                 </div>
             </div>
+            <div class="flex items-center justify-center">
+                <flux:icon.clock class="mr-2 text-primary"/>
+                <div>
+                    <div class="text-sm text-gray-600">Duration</div>
+                    <flux:subheading>{{ $activity->duration }} hours</flux:subheading>
+                </div>
+            </div>
         </div>
 
         @if($userStatus === 'ACCEPTED')
-            <div class="border-t border-b py-6 my-6">
                 <div class="text-center mb-4">
                     <flux:heading>Change your response?</flux:heading>
                 </div>
                 <div class="flex justify-center">
-                    <button wire:click="rsvpNo" class="btn border-2 border-gray-300 hover:bg-gray-50">
-                        <flux:icon.x-mark class="mr-2"/> Cancel my attendance
-                    </button>
+                    <flux:button icon="x-mark" variant="danger" wire:click="rsvpNo">
+                        Cancel my attendance
+                    </flux:button>
                 </div>
-            </div>
         @elseif($userStatus === 'REJECTED')
-            <div class="border-t border-b py-6 my-6">
                 <div class="text-center mb-4">
                     <flux:heading>Change your response?</flux:heading>
-                    <p class="text-gray-600">Duration: {{ $activity->duration }} hours</p>
                 </div>
                 <div class="flex justify-center">
-                    <button wire:click="rsvpYes" class="btn bg-primary !text-white hover:bg-primary/90">
-                        <flux:icon.check class="mr-2"/> I'd like to attend
-                    </button>
+                    <flux:button icon="check" variant="primary" wire:click="rsvpYes">
+                        I'll Attend
+                    </flux:button>
                 </div>
-            </div>
         @elseif($userStatus !== 'ATTENDED' && $userStatus !== 'NOSHOW')
-            <div class="border-t border-b py-6 my-6">
                 <div class="text-center mb-4">
                     <flux:heading>Will you join this activity?</flux:heading>
-                    <p class="text-gray-600">Duration: {{ $activity->duration }} hours</p>
                 </div>
                 <div class="flex justify-center space-x-4">
                     <button wire:click="rsvpYes" class="btn bg-primary !text-white hover:bg-primary/90 min-w-[120px]">
@@ -166,7 +167,6 @@ new #[Layout('layouts.app')] class extends Component implements HasForms {
                         <flux:icon.x-mark class="mr-2"/> Decline
                     </button>
                 </div>
-            </div>
         @endif
     </flux:card>
 

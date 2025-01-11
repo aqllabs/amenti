@@ -51,6 +51,8 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'email',
         'password',
         'user_type',
+        'phone',
+        'username',
     ];
 
     /**
@@ -124,10 +126,11 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         // Get current tenant safely with null check
         $tenant = Filament::getTenant();
 
-        // Get the authenticated user instance
-        $user = Auth::user();
-
-        return $user->teams()->where('team_id', $tenant->id);
+        // Return the relationship for the current team only
+        return $this->belongsToMany(Team::class, 'team_user')
+            ->where('team_id', $tenant?->id)
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function activities()
@@ -283,4 +286,5 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return $this->hasMany(User::class, 'parent_id');
     }
+
 }

@@ -19,7 +19,9 @@ class extends Component {
 ?>
 
 <div class="container mx-auto p-6">
+
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
+
         @foreach($mentors as $mentor)
             <div class="card shadow-lg rounded-lg p-6 bg-white">
                 <div class="flex justify-center mb-4">
@@ -62,7 +64,7 @@ class extends Component {
                 <flux:subheading class="mb-2">Location: {{$activity->address}}</flux:subheading>
                 <p class="mb-4">Number of people: 20</p>
                 {{-- <a href="{{route('activitie', $activity->id)}}" wire:navigate> --}}
-                    <flux:button class="!bg-primary !text-white hover:!bg-primary/90" :href="route('activity.show', $activity->id)">Join</flux:button>
+                    <flux:button variant="primary" :href="route('activity.show', $activity->id)">Join</flux:button>
                 {{-- </a> --}}
             </flux:card>
         @endforeach
@@ -78,6 +80,9 @@ class extends Component {
                 <flux:button class="!bg-primary !text-white hover:!bg-primary/90" :href="route('meeting.show', $meeting->id)">Join</flux:button>
            </flux:card>
        @endforeach
-</div>
+   </div>
+
+
+
 
 </div>

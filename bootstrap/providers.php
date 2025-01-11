@@ -8,5 +8,6 @@ return [
     App\Providers\FortifyServiceProvider::class,
     App\Providers\JetstreamServiceProvider::class,
     App\Providers\OpenAIServiceProvider::class,
+    App\Providers\SoloServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
 ];

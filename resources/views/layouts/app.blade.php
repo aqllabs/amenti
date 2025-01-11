@@ -22,6 +22,7 @@
         <!-- Styles -->
         @livewireStyles
         @fluxStyles
+        @filamentStyles
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         <flux:sidebar sticky stashable class="bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700">
@@ -31,13 +32,13 @@
             <flux:brand href="#" logo="images/logo.svg" name="Mentorship HK" class="px-2 hidden dark:flex" />
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="home" wire:navigate href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">Home</flux:navlist.item>
-                <flux:navlist.item icon="users" wire:navigate href="{{ route('mentorship.dashboard') }}" :current="request()->routeIs('mentorship.*')">Mentorship</flux:navlist.item>
-                <flux:navlist.item icon="calendar" wire:navigate href="{{ route('activities.index') }}" :current="request()->routeIs('activities.index')">Activities</flux:navlist.item>
-                <flux:navlist.item icon="chat-bubble-left-right" wire:navigate href="{{ route('meetings') }}" :current="request()->routeIs('meetings')">Meetings</flux:navlist.item>
-                <flux:navlist.item icon="document-text" wire:navigate href="{{ route('forms') }}" :current="request()->routeIs('forms')">Forms</flux:navlist.item>
-                <flux:navlist.item icon="star" wire:navigate href="{{ route('academy.index') }}" :current="request()->routeIs('academy.*')">Academy</flux:navlist.item>
-                <flux:navlist.item icon="sparkles" wire:navigate href="{{ route('ai-chat') }}" :current="request()->routeIs('ai-chat')">AI</flux:navlist.item>
+                <flux:navlist.item icon="home" wire:navigate href="{{ route('dashboard') }}" >Home</flux:navlist.item>
+                <flux:navlist.item icon="users" wire:navigate href="{{ route('mentorship.dashboard') }}" >Mentorship</flux:navlist.item>
+                <flux:navlist.item icon="calendar" wire:navigate href="{{ route('activities.index') }}" >Activities</flux:navlist.item>
+                <flux:navlist.item icon="chat-bubble-left-right" wire:navigate href="{{ route('meetings') }}" >Meetings</flux:navlist.item>
+                <flux:navlist.item icon="document-text" wire:navigate href="{{ route('forms') }}" >Forms</flux:navlist.item>
+                <flux:navlist.item icon="star" wire:navigate href="{{ route('academy.index') }}" >Academy</flux:navlist.item>
+                <flux:navlist.item icon="sparkles" wire:navigate href="{{ route('ai-chat') }}" >AI</flux:navlist.item>
 
 
                 {{-- <flux:navlist.group expandable heading="Favorites" class="hidden lg:grid">
@@ -135,5 +136,6 @@
 
         @fluxScripts
         @livewireScripts
+        @filamentScripts
     </body>
 </html>

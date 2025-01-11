@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Jetstream\Jetstream;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Actions\ImportAction;
+use App\Filament\Imports\UserImporter;
 
 class UserResource extends Resource
 {
@@ -45,7 +47,7 @@ class UserResource extends Resource
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn(string $context): bool => $context === 'create'),
                 //                Forms\Components\Select::make('role')->options(Role::all()->pluck('name', 'name'))->required(),
-                Select::make('role')
+                Select::make('user_type')
                     ->options([
                         'admin' => 'Administrator',
                         'mentor' => 'Mentor',
@@ -57,7 +59,7 @@ class UserResource extends Resource
                 Select::make("parent_id")
                     ->label('Parent')
                     ->options(User::where('user_type', 'parent')->pluck('name', 'id'))
-                    ->hidden(fn($record) => $record->user_type !== 'mentee')
+                    ->hidden(fn($record) => $record?->user_type !== 'mentee')
                     ->searchable()
                     ->preload(),
             ]);
@@ -88,7 +90,14 @@ class UserResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->headerActions([])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(UserImporter::class)
+                    ->options([
+                        'check_tenant' => true,
+                        'tenant_id' => Filament::getTenant()->id
+                    ]),
+            ])
             ->defaultSort('created_at', 'desc');
     }
 

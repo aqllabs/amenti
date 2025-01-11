@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Models\Activity;
 use App\Models\User;
-
+use Filament\Facades\Filament;
 
 class ActivityObserver
 {
@@ -13,7 +13,10 @@ class ActivityObserver
      */
     public function created(Activity $activity): void
     {
-        $users = User::all();
+
+        $users = User::whereHas('teams', function($query) {
+            $query->where('team_id', Filament::getTenant()->id);
+        })->get();
 
         foreach ($users as $user) {
             $activity->attendees()->attach($user->id, []);

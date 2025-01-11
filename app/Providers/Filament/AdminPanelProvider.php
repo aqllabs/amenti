@@ -9,6 +9,7 @@ use App\Filament\Pages\EditTeam;
 use App\Filament\Resources\UserResource\Widgets\UsersStats;
 use App\Http\Middleware\EnsureHasTeam;
 use App\Listeners\SwitchTeam;
+use App\Livewire\MyCalendarWidget;
 use App\Models\Team;
 use Filament\Events\TenantSet;
 use Filament\Facades\Filament;
@@ -55,7 +56,9 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
 //                UsersStats::class,
+                MyCalendarWidget::class,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

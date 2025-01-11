@@ -6,9 +6,11 @@ use App\Filament\App\Resources\MentorshipResource\Pages;
 use App\Filament\App\Resources\MentorshipResource\RelationManagers;
 use App\Models\Mentorship;
 use App\Models\User;
+use Faker\Core\File;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Facades\Filament;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -17,6 +19,8 @@ class MentorshipResource extends Resource
     protected static ?string $model = Mentorship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+
 
     public static function form(Form $form): Form
     {
@@ -24,14 +28,22 @@ class MentorshipResource extends Resource
             ->schema([
                 Forms\Components\Select::make('mentor_id')
                     ->label('Mentor')
-                    ->options(User::where('user_type', 'mentor')->pluck('name', 'id'))
+                    ->options(
+                        User::where('user_type', 'mentor')
+                            ->whereHas('teams', function ($query) {
+                                $query->where('team_id', Filament::getTenant()->id);
+                            })
+                            ->pluck('name', 'id')
+                    )
                     ->required()
                     ->searchable()
                     ->preload(),
 
                 Forms\Components\Select::make('mentee_id')
                     ->label('Mentee')
-                    ->options(User::where('user_type', 'mentee')->pluck('name', 'id'))
+                    ->options(User::where('user_type', 'mentee')->whereHas('teams', function ($query) {
+                        $query->where('team_id', Filament::getTenant()->id);
+                    })->pluck('name', 'id'))
                     ->required()
                     ->searchable()
                     ->preload(),

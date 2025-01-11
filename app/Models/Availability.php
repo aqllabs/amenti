@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Guava\Calendar\Contracts\Eventable;
+use Guava\Calendar\ValueObjects\Event;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Availability extends Model
+class Availability extends Model implements Eventable
 {
     use HasFactory;
 
@@ -27,5 +29,12 @@ class Availability extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function toEvent(): Event|array {
+        return Event::make($this)
+            ->title('Availability')
+            ->start($this->start_time)
+            ->end($this->end_time);
     }
 }

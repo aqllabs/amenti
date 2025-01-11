@@ -1,0 +1,6 @@
+name,email,phone,username,password,user_type
+John Doe,john.doe@example.com,+1234567890,johndoe,password123,mentor
+Jane Smith,jane.smith@example.com,+1987654321,janesmith,securepass456,mentee
+Admin User,admin@example.com,+1122334455,adminuser,adminpass789,admin
+Parent Test,parent@example.com,+1555666777,parenttest,parentpass321,parent
+Regular User,user@example.com,+1999888777,regularuser,userpass123,user

@@ -89,7 +89,8 @@ class AppPanelProvider extends PanelProvider
                     ->url(fn() => $this->shouldRegisterMenuItem()
                         ? url(EditTeam::getUrl())
                         : url($panel->getPath())),
-            ]);
+            ])
+            ->darkMode(false);
 
 
         return $panel;

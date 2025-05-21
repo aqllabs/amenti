@@ -160,12 +160,12 @@ class extends Component implements HasForms {
                     <flux:heading>Will you join this activity?</flux:heading>
                 </div>
                 <div class="flex justify-center space-x-4">
-                    <button wire:click="rsvpYes" class="btn bg-primary !text-white hover:bg-primary/90 min-w-[120px]">
-                        <flux:icon.check class="mr-2"/> I'll Attend
-                    </button>
-                    <button wire:click="rsvpNo" class="btn border-2 border-gray-300 hover:bg-gray-50 min-w-[120px]">
-                        <flux:icon.x-mark class="mr-2"/> Decline
-                    </button>
+                    <flux:button icon="check" wire:click="rsvpYes" variant="primary">
+                        I'll Attend
+                    </flux:button>
+                    <flux:button icon="x-mark" wire:click="rsvpNo" variant="danger">
+                        Decline
+                    </flux:button>
                 </div>
         @endif
     </flux:card>
@@ -189,15 +189,15 @@ class extends Component implements HasForms {
         </div>
     </flux:card>
 
-    {{-- @if($showFeedbackForm && $userStatus === 'ACCEPTED') --}}
+    @if($showFeedbackForm && $userStatus === 'ACCEPTED')
         <flux:card class="mb-6">
             <flux:heading size="lg" class="mb-4">Share Your Feedback</flux:heading>
             <form wire:submit="submitFeedback" class="space-y-4">
                 {{ $this->form }}
-                <button type="submit" class="btn bg-primary !text-white hover:bg-primary/90">
+                <flux:button type="submit" variant="primary">
                     Submit Feedback
-                </button> 
+                </flux:button> 
             </form>
         </flux:card>
-    {{-- @endif --}}
+    @endif
 </div>

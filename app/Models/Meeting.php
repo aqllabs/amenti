@@ -12,7 +12,9 @@ class Meeting extends Model
     use HasUuids;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
+
     protected $fillable = [
         'id',
         'start_date',
@@ -42,12 +44,20 @@ class Meeting extends Model
         return $this->hasMany(MeetingAttendance::class)->with([
             'user' => function ($query) {
                 $query->select('id', 'name', 'email');
-            }
+            },
         ]);
     }
 
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    /**
+     * Get the booking request that created this meeting.
+     */
+    public function bookingRequest()
+    {
+        return $this->hasOne(BookingRequest::class);
     }
 }

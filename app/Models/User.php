@@ -4,42 +4,37 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\HasNoPersonalTeam;
+use Exception;
 use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Cashier\Billable;
 // Use this for Stripe
+use Illuminate\Support\Collection;
+use Laravel\Cashier\Billable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use App\Models\UserLessonProgress;
-use Exception;
-
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable implements FilamentUser, HasTenants
 {
     use Billable;
     use HasApiTokens;
     use HasFactory;
-    use HasProfilePhoto;
     use HasNoPersonalTeam, HasTeams {
         HasNoPersonalTeam::ownsTeam insteadof HasTeams;
         HasNoPersonalTeam::isCurrentTeam insteadof HasTeams;
     }
+    use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
 
     /**
      * The attributes that are mass assignable.
@@ -121,6 +116,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return $this->allTeams();
     }
+
     public function team()
     {
         // Get current tenant safely with null check
@@ -152,9 +148,9 @@ class User extends Authenticatable implements FilamentUser, HasTenants
             ->withTimestamps();
     }
 
-    //user has many activity attendances
-    //user has many meeting attendances
-    //user hase many course enrollments
+    // user has many activity attendances
+    // user has many meeting attendances
+    // user hase many course enrollments
 
     public function mentors()
     {
@@ -207,7 +203,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         // Check if the course exists
         $course = Course::find($courseId);
-        if (!$course) {
+        if (! $course) {
             return false;
         }
 
@@ -219,10 +215,12 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         // Enroll the user
         try {
             $this->userEnrollments()->attach($courseId, ['enrolled_at' => now()]);
+
             return true;
         } catch (Exception $e) {
             // Handle any errors (e.g., database errors)
             report($e);
+
             return false;
         }
     }
@@ -236,7 +234,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     public function finishLesson(Lesson $lesson): bool
     {
         // Check if the user is enrolled in the course
-        if (!$this->userEnrollments()->where('course_id', $lesson->course_id)->exists()) {
+        if (! $this->userEnrollments()->where('course_id', $lesson->course_id)->exists()) {
             return false;
         }
 
@@ -245,7 +243,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
         return true;
     }
-
 
     public function completedLessons()
     {
@@ -262,6 +259,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
             return 0;
         }
         $completedLessons = $this->getCourseProgress($courseId);
+
         return ($completedLessons / $totalLessons) * 100;
     }
 
@@ -287,4 +285,19 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         return $this->hasMany(User::class, 'parent_id');
     }
 
+    /**
+     * Get booking requests sent by this user.
+     */
+    public function sentBookingRequests(): HasMany
+    {
+        return $this->hasMany(BookingRequest::class, 'requester_id');
+    }
+
+    /**
+     * Get booking requests received by this user.
+     */
+    public function receivedBookingRequests(): HasMany
+    {
+        return $this->hasMany(BookingRequest::class, 'recipient_id');
+    }
 }

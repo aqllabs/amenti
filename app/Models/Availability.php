@@ -7,6 +7,7 @@ use Guava\Calendar\ValueObjects\Event;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Availability extends Model implements Eventable
 {
@@ -22,8 +23,6 @@ class Availability extends Model implements Eventable
 
     protected $casts = [
         'date' => 'date',
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -31,7 +30,16 @@ class Availability extends Model implements Eventable
         return $this->belongsTo(User::class);
     }
 
-    public function toEvent(): Event|array {
+    /**
+     * Get booking requests for this availability slot.
+     */
+    public function bookingRequests(): HasMany
+    {
+        return $this->hasMany(BookingRequest::class);
+    }
+
+    public function toEvent(): Event|array
+    {
         return Event::make($this)
             ->title('Availability')
             ->start($this->start_time)

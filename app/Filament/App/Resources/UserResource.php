@@ -55,7 +55,7 @@ class UserResource extends Resource
                         'parent' => 'Parent',
                     ])
                     ->required()
-                    ->label('Team Role'),
+                    ->label('User Role'),
                 Select::make("parent_id")
                     ->label('Parent')
                     ->options(User::where('user_type', 'parent')->pluck('name', 'id'))

@@ -6,17 +6,17 @@
 
         <x-validation-errors class="mb-4" />
 
-        @session('status')
+        @session("status")
             <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
                 {{ $value }}
             </div>
         @endsession
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route("login") }}">
             @csrf
 
             <div>
-                <x-label for="login" value="{{ __('Email / Phone / Username') }}" />
+                <x-label for="login" value="{{ __('Username') }}" />
                 <x-input id="login" class="block mt-1 w-full" type="text" name="login" :value="old('login')" required autofocus />
             </div>
 
@@ -28,25 +28,31 @@
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
                     <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __("Remember me") }}</span>
                 </label>
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
+                @if (Route::has("password.request"))
+                    <a
+                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        href="{{ route("password.request") }}"
+                    >
+                        {{ __("Forgot your password?") }}
                     </a>
                 @endif
 
                 <x-button class="ms-4">
-                    {{ __('Log in') }}
+                    {{ __("Log in") }}
                 </x-button>
             </div>
             <div class="flex flex-col items-center justify-end mt-4">
-                <p class="text-base">{{ __('Do not have an account?') }}</p>
-                <a href="{{ route('register') }}" class="ms-4 flex btn btn-ghost text-info">
-                    {{ __('Register') }}
+                <p class="text-base">{{ __("Do not have an account?") }}</p>
+                <a
+                    href="{{ route("register") }}"
+                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                >
+                    {{ __("Register") }}
                 </a>
             </div>
         </form>

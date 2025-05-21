@@ -19,13 +19,7 @@ export default {
             fontFamily: {
                 sans: ["Inter", "sans-serif"],
             },
-            colors: {
-                accent: {
-                    DEFAULT: 'var(--color-accent)',
-                    content: 'var(--color-accent-content)',
-                    foreground: 'var(--color-accent-foreground)',
-                },
-            },
+            colors: {},
         },
     },
 

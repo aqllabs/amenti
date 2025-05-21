@@ -37,13 +37,17 @@ class EditUser extends EditRecord
 
     protected function afterSave()
     {
-
         $user = $this->getRecord();
-        $data = $this->data;
+        $data = $this->form->getState();
         $team = Filament::getTenant();
-        $team->users()->updateExistingPivot($user->id, ['role' => $data['role']]);
-        //update the user type in the user table
-        $user->user_type = $data['role'] ?? 'mentee';
+        
+        // Update user_type in the users table
+        $user->user_type = $data['user_type'] ?? 'mentee';
         $user->save();
+        
+        // Update the role in the team_user pivot table
+        $team->users()->updateExistingPivot($user->id, [
+            'role' => $data['user_type'] ?? 'mentee'
+        ]);
     }
 }

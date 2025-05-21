@@ -5,7 +5,6 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\ActivityResource\Pages;
 use App\Filament\App\Resources\ActivityResource\RelationManagers\AttendeesRelationManager;
 use App\Models\Activity;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -13,7 +12,6 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
 
 class ActivityResource extends Resource
 {
@@ -45,7 +43,7 @@ class ActivityResource extends Resource
                 Forms\Components\Select::make('status')
                     ->required()
                     ->options([
-                        'DRAFT' => 'DRAFT', 'ACTIVE' => 'ACTIVE', 'CANCELLED' => 'CANCELLED', 'DELETED' => 'DELETED'
+                        'DRAFT' => 'DRAFT', 'ACTIVE' => 'ACTIVE', 'CANCELLED' => 'CANCELLED', 'DELETED' => 'DELETED',
                     ])
                     ->default('DRAFT'),
             ]);
@@ -63,7 +61,7 @@ class ActivityResource extends Resource
                 Tables\Columns\TextColumn::make('address'),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
-                        'DRAFT' => 'DRAFT', 'ACTIVE' => 'ACTIVE', 'CANCELLED' => 'CANCELLED', 'DELETED' => 'DELETED'
+                        'DRAFT' => 'DRAFT', 'ACTIVE' => 'ACTIVE', 'CANCELLED' => 'CANCELLED', 'DELETED' => 'DELETED',
                     ])
                     ->sortable(),
             ])
@@ -98,7 +96,6 @@ class ActivityResource extends Resource
         ];
     }
 
-
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -109,6 +106,4 @@ class ActivityResource extends Resource
                 TextEntry::make('address'),
             ]);
     }
-
-
 }

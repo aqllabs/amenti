@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CourseResource extends Resource
 {
@@ -70,7 +68,6 @@ class CourseResource extends Resource
             RelationManagers\LessonsRelationManager::class,
         ];
     }
-
 
     public static function getPages(): array
     {

@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
+use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Facades\Filament;
 
 class ApplyTenantScopes
 {
@@ -21,8 +21,6 @@ class ApplyTenantScopes
         User::addGlobalScope(
             fn (Builder $query) => $query->whereBelongsTo(Filament::getTenant()),
         );
-
-
 
         return $next($request);
     }

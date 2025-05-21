@@ -13,12 +13,13 @@ class Quiz extends Model
     protected $casts = [
         'structure' => 'array',
     ];
+
     protected $fillable = [
         'title',
         'description',
         'is_published',
         'lesson_id',
-        'structure'
+        'structure',
     ];
 
     public function lesson(): BelongsTo

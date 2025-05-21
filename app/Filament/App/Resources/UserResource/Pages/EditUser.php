@@ -32,6 +32,7 @@ class EditUser extends EditRecord
         }
 
         $data['role'] = $role?->key;
+
         return $data;
     }
 
@@ -40,14 +41,14 @@ class EditUser extends EditRecord
         $user = $this->getRecord();
         $data = $this->form->getState();
         $team = Filament::getTenant();
-        
+
         // Update user_type in the users table
         $user->user_type = $data['user_type'] ?? 'mentee';
         $user->save();
-        
+
         // Update the role in the team_user pivot table
         $team->users()->updateExistingPivot($user->id, [
-            'role' => $data['user_type'] ?? 'mentee'
+            'role' => $data['user_type'] ?? 'mentee',
         ]);
     }
 }

@@ -14,7 +14,7 @@ class ActivityObserver
     public function created(Activity $activity): void
     {
 
-        $users = User::whereHas('teams', function($query) {
+        $users = User::whereHas('teams', function ($query) {
             $query->where('team_id', Filament::getTenant()->id);
         })->get();
 

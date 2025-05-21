@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class UserLessonProgress extends Pivot
 {
     public $incrementing = true;
+
     public $timestamps = true;
+
     protected $table = 'user_lesson_progress';
+
     protected $fillable = [
         'user_id',
         'lesson_id',

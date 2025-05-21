@@ -44,13 +44,13 @@ new #[Layout('layouts.app')] class extends Component {
         <flux:card>
             <div class="text-center">
                 <div class="text-3xl font-bold">{{ $stats['total_meetings'] }}</div>
-                <div class="text-gray-600">Total Meetings</div>
+                <flux:text>Total Meetings</flux:text>
             </div>
         </flux:card>
         <flux:card>
             <div class="text-center">
                 <div class="text-3xl font-bold">{{ $stats['total_activities'] }}</div>
-                <div class="text-gray-600">Total Activities</div>
+                <flux:text>Total Activities</flux:text>
             </div>
         </flux:card>
         <flux:card>
@@ -58,9 +58,9 @@ new #[Layout('layouts.app')] class extends Component {
                 <div class="text-3xl font-bold">
                     {{ $user->user_type === 'mentee' ? $stats['mentors_count'] : $stats['mentees_count'] }}
                 </div>
-                <div class="text-gray-600">
+                <flux:text>
                     {{ $user->user_type === 'mentee' ? 'Mentors' : 'Mentees' }}
-                </div>
+                </flux:text>
             </div>
         </flux:card>
     </div>
@@ -74,7 +74,7 @@ new #[Layout('layouts.app')] class extends Component {
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach(($user->user_type === 'mentee' ? $mentors : $mentees) as $person)
-                <div class="border rounded-lg p-4 hover:shadow-lg transition-shadow">
+                <flux:card>
                     <div class="flex items-center space-x-4 mb-4">
                         <img src="{{ $person->profile_photo_url }}" 
                              alt="{{ $person->name }}" 
@@ -85,12 +85,12 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <a href="{{ route('mentorship.detail', $person) }}" 
+                        <flux:button href="{{ route('mentorship.detail', $person) }}" 
                            class="btn btn-primary text-white w-full">
                             View Details
-                        </a>
+                        </flux:button>
                     </div>
-                </div>
+                </flux:card>
             @endforeach
         </div>
     </flux:card>

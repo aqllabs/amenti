@@ -18,8 +18,11 @@ class ActivityAttendance extends Model
     ];
 
     const STATUS_ATTENDED = 'ATTENDED';
+
     const STATUS_ACCEPTED = 'ACCEPTED';
+
     const STATUS_NOSHOW = 'NOSHOW';
+
     const STATUS_REJECTED = 'REJECTED';
 
     public static function getStatuses(): array

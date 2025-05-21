@@ -4,7 +4,6 @@ namespace App\Traits;
 
 trait HasNoPersonalTeam
 {
-
     /**
      * Determine if the user owns the given team.
      *
@@ -32,11 +31,9 @@ trait HasNoPersonalTeam
      * Determine if the user is apart of any team.
      *
      * @param  mixed  $team
-     * @return bool
      */
     public function isMemberOfATeam(): bool
     {
         return (bool) ($this->teams()->count() || $this->ownedTeams()->count());
     }
-
 }

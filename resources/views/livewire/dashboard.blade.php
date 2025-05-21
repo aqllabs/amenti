@@ -31,7 +31,7 @@ new #[Layout("layouts.app")] class extends Component {
                     <p class="text-gray-600">Senior Developer</p>
                     <p class="text-gray-600">{{ $mentor->email }}</p>
                 </div>
-                <flux:button class="!bg-primary !text-white hover:!bg-primary/90" :href="route('mentor.show', $mentor->id)"></flux:button>
+                <flux:button class="!bg-primary text-white! hover:!bg-primary/90" :href="route('mentor.show', $mentor->id)"></flux:button>
             </div>
         @endforeach
 
@@ -52,7 +52,7 @@ new #[Layout("layouts.app")] class extends Component {
             <span class="text-sm font-medium text-gray-700 dark:text-white">Fill in PDP survey: 60%</span>
             </div>
             </div>
-            <flux:button class="!bg-primary !text-white hover:!bg-primary/90">View All Goals</flux:button>
+            <flux:button class="!bg-primary text-white! hover:!bg-primary/90">View All Goals</flux:button>
             </div>
         --}}
     </div>
@@ -78,7 +78,7 @@ new #[Layout("layouts.app")] class extends Component {
                 <flux:subheading class="mb-2">Date: {{ $meeting->start_date->format("M j, g:i a") }}</flux:subheading>
                 <div class="flex items-center space-x-2">
                     @foreach ($meeting->attendances as $attendance)
-                        <flux:avatar tooltip name="Caleb Porzio" />
+                        <flux:text>{{ $attendance->user->name }}</flux:text>
                     @endforeach
                 </div>
 

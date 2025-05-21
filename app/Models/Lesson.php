@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Lesson extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'title', 'content', 'order', 'duration', 'is_published', 'course_id', 'video_url',
     ];
@@ -51,7 +52,7 @@ class Lesson extends Model
         return $this->belongsTo(Course::class);
     }
 
-    //add hasQuiz attribute that returns true if the lesson has a quiz
+    // add hasQuiz attribute that returns true if the lesson has a quiz
 
     public function getHasQuizAttribute()
     {
@@ -62,7 +63,7 @@ class Lesson extends Model
 
     public function quiz(): HasOne
     {
-//        can be null
+        //        can be null
         return $this->hasOne(Quiz::class)->withDefault();
     }
 }

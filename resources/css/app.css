@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "../../vendor/livewire/flux/dist/flux.css";
 
 [x-cloak] {
     display: none;
@@ -20,5 +19,3 @@
         --color-accent-foreground: var(--color-white);
     }
 }
-
-@custom-variant dark (&:where(.dark, .dark *));

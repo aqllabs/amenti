@@ -46,7 +46,7 @@
 
         <!-- Styles -->
         @livewireStyles
-        @fluxAppearance
+        @fluxStyles
     </head>
     <body>
         <x-banner />

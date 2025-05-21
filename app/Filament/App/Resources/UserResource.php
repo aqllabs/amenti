@@ -3,22 +3,17 @@
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\UserResource\Pages;
-use App\Filament\App\Resources\UserResource\RelationManagers;
+use App\Filament\Imports\UserImporter;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Jetstream\Jetstream;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Actions\ImportAction;
-use App\Filament\Imports\UserImporter;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -43,9 +38,9 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                    ->dehydrated(fn($state) => filled($state))
-                    ->required(fn(string $context): bool => $context === 'create'),
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create'),
                 //                Forms\Components\Select::make('role')->options(Role::all()->pluck('name', 'name'))->required(),
                 Select::make('user_type')
                     ->options([
@@ -56,10 +51,10 @@ class UserResource extends Resource
                     ])
                     ->required()
                     ->label('User Role'),
-                Select::make("parent_id")
+                Select::make('parent_id')
                     ->label('Parent')
                     ->options(User::where('user_type', 'parent')->pluck('name', 'id'))
-                    ->hidden(fn($record) => $record?->user_type !== 'mentee')
+                    ->hidden(fn ($record) => $record?->user_type !== 'mentee')
                     ->searchable()
                     ->preload(),
             ]);
@@ -95,7 +90,7 @@ class UserResource extends Resource
                     ->importer(UserImporter::class)
                     ->options([
                         'check_tenant' => true,
-                        'tenant_id' => Filament::getTenant()->id
+                        'tenant_id' => Filament::getTenant()->id,
                     ]),
             ])
             ->defaultSort('created_at', 'desc');

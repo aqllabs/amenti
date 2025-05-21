@@ -22,7 +22,6 @@ return new class extends Migration
             $table->text('feedback')->nullable();
             $table->text('admin_feedback')->nullable();
 
-
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 

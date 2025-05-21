@@ -13,20 +13,19 @@ class AttendeesRelationManager extends RelationManager
 {
     protected static string $relationship = 'attendances';
 
-
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Placeholder::make('Name')->content(fn(ActivityAttendance $act) => $act->user->name),
-                Forms\Components\Placeholder::make('Email')->content(fn(ActivityAttendance $act) => $act->user->email),
+                Forms\Components\Placeholder::make('Name')->content(fn (ActivityAttendance $act) => $act->user->name),
+                Forms\Components\Placeholder::make('Email')->content(fn (ActivityAttendance $act) => $act->user->email),
                 Forms\Components\Select::make('status')
                     ->options(
                         [
                             'ATTENDED' => 'ATTENDED',
                             'ACCEPTED' => 'ACCEPTED',
                             'NOSHOW' => 'NOSHOW',
-                            'REJECTED' => 'REJECTED'
+                            'REJECTED' => 'REJECTED',
                         ]
                     )
                     ->required(),
@@ -48,9 +47,9 @@ class AttendeesRelationManager extends RelationManager
                         'ATTENDED' => 'ATTENDED',
                         'ACCEPTED' => 'ACCEPTED',
                         'NOSHOW' => 'NOSHOW',
-                        'REJECTED' => 'REJECTED'
+                        'REJECTED' => 'REJECTED',
                     ]
-                )
+                ),
             ], Tables\Enums\FiltersLayout::AboveContent)
             // ->headerActions([
             //     Tables\Actions\CreateAction::make(),

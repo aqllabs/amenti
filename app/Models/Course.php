@@ -11,7 +11,6 @@ class Course extends Model
 
     protected $fillable = ['title', 'description', 'is_published'];
 
-
     public function lessons()
     {
         return $this->hasMany(Lesson::class)->orderBy('order');

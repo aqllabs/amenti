@@ -17,8 +17,6 @@ class MyForm extends Model
 
     protected $table = 'forms';
 
-
-
     public function formSubmissions()
     {
         return $this->hasMany(FormSubmission::class, 'form_id');

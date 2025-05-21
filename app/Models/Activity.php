@@ -6,7 +6,6 @@ use App\Observers\ActivityObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Activity extends Model
 {
     use HasFactory;
@@ -22,6 +21,7 @@ class Activity extends Model
         'image_urls',
         'duration',
     ];
+
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
@@ -33,7 +33,7 @@ class Activity extends Model
         static::observe(ActivityObserver::class);
     }
 
-    //not sure this is the best way to do this
+    // not sure this is the best way to do this
 
     public function attendees()
     {
@@ -42,8 +42,8 @@ class Activity extends Model
             ->withTimestamps();
     }
 
-    //attendances also contains foreign userid whose fields i need to access
-    //hasmay with the users columns
+    // attendances also contains foreign userid whose fields i need to access
+    // hasmay with the users columns
     public function attendances()
     {
         return $this->hasMany(ActivityAttendance::class);

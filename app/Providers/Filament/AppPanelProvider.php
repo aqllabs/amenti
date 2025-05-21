@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Pages\CreateTeam;
 use App\Filament\Pages\EditProfile;
 use App\Filament\Pages\EditTeam;
+use App\Http\Middleware\ApplyTenantScopes;
 use App\Http\Middleware\EnsureHasTeam;
 use App\Listeners\SwitchTeam;
 use App\Models\Team;
@@ -27,9 +28,6 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Event;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Fortify\Fortify;
-use Laravel\Jetstream\Jetstream;
-use App\Http\Middleware\ApplyTenantScopes;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -76,7 +74,7 @@ class AppPanelProvider extends PanelProvider
                 MenuItem::make()
                     ->label('Profile')
                     ->icon('heroicon-o-user-circle')
-                    ->url(fn() => $this->shouldRegisterMenuItem()
+                    ->url(fn () => $this->shouldRegisterMenuItem()
                         ? url(EditProfile::getUrl())
                         : url($panel->getPath())),
             ])
@@ -86,12 +84,11 @@ class AppPanelProvider extends PanelProvider
                 MenuItem::make()
                     ->label('Team Settings')
                     ->icon('heroicon-o-cog-6-tooth')
-                    ->url(fn() => $this->shouldRegisterMenuItem()
+                    ->url(fn () => $this->shouldRegisterMenuItem()
                         ? url(EditTeam::getUrl())
                         : url($panel->getPath())),
             ])
             ->darkMode(false);
-
 
         return $panel;
     }

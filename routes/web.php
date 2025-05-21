@@ -3,8 +3,6 @@
 use App\Http\Controllers\Auth\MagicLinkController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OgImageController;
 use App\Http\Controllers\Payments\StripeController;
 use App\Http\Controllers\SitemapController;
@@ -52,7 +50,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    EnsureHasTeam::class
+    EnsureHasTeam::class,
 ])->group(function () {
 
     //     Stripe Routes

@@ -12,7 +12,7 @@
 </head>
 <body class="antialiased">
 
-<div class="overflow-hidden relative w-[1200px] h-[630px] border-t-[56px] border-secondary">
+<div class="overflow-hidden relative w-[1200px] h-[630px] border-t-56 border-secondary">
     <div class="mt-24 ml-16 max-w-[900px]">
         <h1 class="text-7xl font-bold leading-tight line-clamp-3">{{ $title }}</h1>
     </div>

@@ -26,8 +26,7 @@
 
     <!-- Styles -->
     @livewireStyles
-    @fluxAppearance
-
+    @fluxStyles
 </head>
 <body class="min-h-screen bg-white dark:bg-zinc-800">
 <x-banner/>
@@ -57,8 +56,6 @@
     </flux:navlist>
 
     <flux:dropdown position="top" align="left" class="max-lg:hidden">
-        <flux:profile avatar="https://fluxui.dev/img/demo/user.png" name="Olivia Martin"/>
-
         <flux:menu>
             <flux:menu.radio.group>
                 <flux:menu.radio checked>Olivia Martin</flux:menu.item>

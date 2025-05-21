@@ -20,8 +20,8 @@ class MeetingResource extends Resource
     protected static ?string $model = Meeting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Mentorship';
 
+    protected static ?string $navigationGroup = 'Mentorship';
 
     public static function form(Form $form): Form
     {
@@ -90,7 +90,7 @@ class MeetingResource extends Resource
                         TextEntry::make('feedback'),
                         TextEntry::make('rating'),
                         TextEntry::make('admin_feedback'),
-                    ])->grid(2)
+                    ])->grid(2),
                 ]
             ),
         ]);

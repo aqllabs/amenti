@@ -9,7 +9,6 @@ class ViewMentorship extends ViewRecord
 {
     protected static string $resource = MentorshipResource::class;
 
-
     protected function getHeaderWidgets(): array
     {
         return [

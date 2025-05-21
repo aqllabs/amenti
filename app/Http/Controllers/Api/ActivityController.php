@@ -23,18 +23,21 @@ class ActivityController extends Controller
     public function store(StoreActivityRequest $request)
     {
         $activity = Activity::create($request->validated());
+
         return new ActivityResource($activity);
     }
 
     public function update(UpdateActivityRequest $request, Activity $activity)
     {
         $activity->update($request->validated());
+
         return new ActivityResource($activity);
     }
 
     public function destroy(Activity $activity)
     {
         $activity->delete();
+
         return response()->noContent();
     }
 }

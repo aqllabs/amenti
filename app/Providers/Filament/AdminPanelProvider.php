@@ -55,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-//                UsersStats::class,
+                //                UsersStats::class,
                 MyCalendarWidget::class,
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
@@ -72,13 +72,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 EnsureHasTeam::class,
-                Authenticate::class
+                Authenticate::class,
             ])
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Profile')
                     ->icon('heroicon-o-user-circle')
-                    ->url(fn() => $this->shouldRegisterMenuItem()
+                    ->url(fn () => $this->shouldRegisterMenuItem()
                         ? url(EditProfile::getUrl())
                         : url($panel->getPath())),
             ]);
@@ -92,12 +92,11 @@ class AdminPanelProvider extends PanelProvider
                     MenuItem::make()
                         ->label('Team Settings')
                         ->icon('heroicon-o-cog-6-tooth')
-                        ->url(fn() => $this->shouldRegisterMenuItem()
+                        ->url(fn () => $this->shouldRegisterMenuItem()
                             ? url(EditTeam::getUrl())
                             : url($panel->getPath())),
                 ]);
         }
-
 
         return $panel;
     }
@@ -117,7 +116,6 @@ class AdminPanelProvider extends PanelProvider
         /**
          * Listen and switch team if tenant was changed
          */
-
         Event::listen(
             TenantSet::class,
             SwitchTeam::class,

@@ -16,7 +16,7 @@ class DeleteTeamTest extends TestCase
 
     public function test_teams_can_be_deleted(): void
     {
-        if (!Features::hasTeamFeatures()) {
+        if (! Features::hasTeamFeatures()) {
             $this->markTestSkipped('Teams not enabled.');
         }
 
@@ -39,7 +39,7 @@ class DeleteTeamTest extends TestCase
 
     public function test_personal_teams_cant_be_deleted(): void
     {
-        if (!Features::hasTeamFeatures()) {
+        if (! Features::hasTeamFeatures()) {
             $this->markTestSkipped('Teams not enabled.');
         }
 

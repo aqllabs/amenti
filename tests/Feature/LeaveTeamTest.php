@@ -15,7 +15,7 @@ class LeaveTeamTest extends TestCase
 
     public function test_users_can_leave_teams(): void
     {
-        if (!Features::hasTeamFeatures()) {
+        if (! Features::hasTeamFeatures()) {
             $this->markTestSkipped('Teams not enabled.');
         }
 
@@ -35,7 +35,7 @@ class LeaveTeamTest extends TestCase
 
     public function test_team_owners_cant_leave_their_own_team(): void
     {
-        if (!Features::hasTeamFeatures()) {
+        if (! Features::hasTeamFeatures()) {
             $this->markTestSkipped('Teams not enabled.');
         }
 

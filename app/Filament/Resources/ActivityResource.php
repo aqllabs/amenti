@@ -13,14 +13,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-
 class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Mentorship';
 
+    protected static ?string $navigationGroup = 'Mentorship';
 
     public static function form(Form $form): Form
     {
@@ -46,7 +45,7 @@ class ActivityResource extends Resource
                 Forms\Components\Select::make('status')
                     ->required()
                     ->options([
-                        'DRAFT' => 'DRAFT', 'ACTIVE' => 'ACTIVE', 'CANCELLED' => 'CANCELLED', 'DELETED' => 'DELETED'
+                        'DRAFT' => 'DRAFT', 'ACTIVE' => 'ACTIVE', 'CANCELLED' => 'CANCELLED', 'DELETED' => 'DELETED',
                     ])
                     ->default('DRAFT'),
             ]);
@@ -94,7 +93,6 @@ class ActivityResource extends Resource
         ];
     }
 
-
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -105,6 +103,4 @@ class ActivityResource extends Resource
                 TextEntry::make('address'),
             ]);
     }
-
-
 }

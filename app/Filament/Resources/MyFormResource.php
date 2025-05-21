@@ -3,33 +3,28 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MyFormResource\Pages;
-use App\Filament\Resources\MyFormResource\RelationManagers;
 use App\Filament\Resources\MyFormResource\RelationManagers\FormSubmissionRelationManager;
 use App\Models\MyForm;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Forms\Components;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Support\Str;
-
 
 class MyFormResource extends Resource
 {
     protected static ?string $model = MyForm::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Mentorship';
 
+    protected static ?string $navigationGroup = 'Mentorship';
 
     protected static function getHiddenUuid()
     {
@@ -114,13 +109,11 @@ class MyFormResource extends Resource
                             Toggle::make('required')->label('Required')->default(false),
                         ])
                         ->columns(2),
-                ])->columnSpan(2)
+                ])->columnSpan(2),
 
                 //
             ]);
     }
-
-
 
     public static function table(Table $table): Table
     {

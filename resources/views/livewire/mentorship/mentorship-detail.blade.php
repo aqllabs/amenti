@@ -63,12 +63,12 @@ new #[Layout('layouts.app')] class extends Component {
                      class="w-20 h-20 rounded-full">
                 <div>
                     <flux:heading>{{ $targetUser->name }}</flux:heading>
-                    <p class="text-gray-600">Your {{ $relationship }}</p>
+                    <flux:text class="text-gray-600">Your {{ $relationship }}</flux:text>
                     @if($relationshipStartDate)
-                        <p class="text-sm text-gray-500">
+                        <flux:text class="text-sm text-gray-500">
                             Mentoring since {{ $relationshipStartDate->format('M Y') }}
                             ({{ $relationshipStartDate->diffForHumans() }})
-                        </p>
+                        </flux:text>
                     @endif
                 </div>
             </div>
@@ -78,7 +78,7 @@ new #[Layout('layouts.app')] class extends Component {
             <div>
                 <flux:heading  class="mb-4">Contact Information</flux:heading>
                 <div class="space-y-2">
-                    <p><span class="font-semibold">Email:</span> {{ $targetUser->email }}</p>
+                    <flux:text><span class="font-semibold">Email:</span> {{ $targetUser->email }}</flux:text>
                 </div>
             </div>
         </div>
@@ -92,9 +92,9 @@ new #[Layout('layouts.app')] class extends Component {
                     <div class="flex justify-between items-start">
                         <div>
                             <h4 class="font-semibold">{{ $activity->activity_name }}</h4>
-                            <p class="text-sm text-gray-600">
+                            <flux:text class="text-sm text-gray-600">
                                 {{ $activity->start_date->format('M j, Y g:i A') }}
-                            </p>
+                            </flux:text>
                         </div>
                         <span class="px-2 py-1 text-sm rounded-full {{ 
                             $activity->pivot->status === 'ATTENDED' ? 'bg-green-100 text-green-800' : 
@@ -106,7 +106,7 @@ new #[Layout('layouts.app')] class extends Component {
                     </div>
                 </div>
             @empty
-                <p class="text-gray-600">No recent activities</p>
+                <flux:text class="text-gray-600">No recent activities</flux:text>
             @endforelse
         </div>
     </flux:card>
@@ -119,9 +119,9 @@ new #[Layout('layouts.app')] class extends Component {
                     <div class="flex justify-between items-start">
                         <div>
                             <h4 class="font-semibold">{{ $meeting->title }}</h4>
-                            <p class="text-sm text-gray-600">
+                            <flux:text class="text-sm text-gray-600">
                                 {{ $meeting->start_date->format('M j, Y g:i A') }}
-                            </p>
+                            </flux:text>
                         </div>
                         <span class="px-2 py-1 text-sm rounded-full {{ 
                             $meeting->pivot->status === 'ATTENDED' ? 'bg-green-100 text-green-800' : 
@@ -133,7 +133,7 @@ new #[Layout('layouts.app')] class extends Component {
                     </div>
                 </div>
             @empty
-                <p class="text-gray-600">No recent meetings</p>
+                <flux:text class="text-gray-600">No recent meetings</flux:text>
             @endforelse
         </div>
     </flux:card>

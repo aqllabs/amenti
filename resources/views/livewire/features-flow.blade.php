@@ -1,7 +1,7 @@
 <section class="relative py-8 lg:py-20" id="features">
     <div class="absolute start-[10%] z-0">
         <div
-            class="pointer-events-none aspect-square w-60 rounded-full bg-gradient-to-r from-primary/10 via-violet-500/10 to-purple-500/10 blur-3xl [transform:translate3d(0,0,0)] lg:w-[600px]"
+            class="pointer-events-none aspect-square w-60 rounded-full bg-linear-to-r from-primary/10 via-violet-500/10 to-purple-500/10 blur-3xl [transform:translate3d(0,0,0)] lg:w-[600px]"
         ></div>
     </div>
 
@@ -10,7 +10,7 @@
             <h2 class="inline text-4xl font-semibold">{{ __('Features Flow') }}</h2>
         </div>
 
-        <div class="relative z-[2] mt-8 grid gap-8 lg:mt-20 lg:grid-cols-2 lg:gap-12">
+        <div class="relative z-2 mt-8 grid gap-8 lg:mt-20 lg:grid-cols-2 lg:gap-12">
             <div
                 class="overflow-hidden rounded-lg bg-base-200 shadow-md transition-all hover:shadow-xl"
             >

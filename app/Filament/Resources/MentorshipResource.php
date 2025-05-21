@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MentorshipResource\Pages;
-use App\Filament\Resources\MentorshipResource\RelationManagers;
 use App\Models\Mentorship;
 use App\Models\User;
 use Filament\Forms;
@@ -17,8 +16,8 @@ class MentorshipResource extends Resource
     protected static ?string $model = Mentorship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Mentorship';
 
+    protected static ?string $navigationGroup = 'Mentorship';
 
     public static function form(Form $form): Form
     {

@@ -11,8 +11,8 @@ use Filament\Tables\Table;
 class StripeSubscriptionResource extends Resource
 {
     protected static ?string $model = \Laravel\Cashier\Subscription::class;
-    protected static bool $isScopedToTenant = false;
 
+    protected static bool $isScopedToTenant = false;
 
     protected static ?string $modelLabel = 'Stripe Subscriptions';
 

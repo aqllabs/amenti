@@ -2,7 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\User;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -10,7 +9,6 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class StatsOverview extends BaseWidget
 {
     use InteractsWithPageFilters;
-
 
     protected function getStats(): array
     {
@@ -20,7 +18,7 @@ class StatsOverview extends BaseWidget
 
         return [
             Stat::make('Activities organised', '4'),
-            Stat::make('Meetings happened', '24')
+            Stat::make('Meetings happened', '24'),
         ];
     }
 }

@@ -15,7 +15,7 @@ class UpdateTeamNameTest extends TestCase
 
     public function test_team_names_can_be_updated(): void
     {
-        if (!Features::hasTeamFeatures()) {
+        if (! Features::hasTeamFeatures()) {
             $this->markTestSkipped('Teams not enabled.');
         }
 

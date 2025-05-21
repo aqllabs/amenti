@@ -31,7 +31,7 @@ class TeamPolicy
      */
     public function create(User $user): bool
     {
-        return ($user->user_type === 'admin' && $user->allTeams()->count() < 1) || $user->email === "mentorshiphk@gmail.com";
+        return ($user->user_type === 'admin' && $user->allTeams()->count() < 1) || $user->email === 'mentorshiphk@gmail.com';
     }
 
     /**

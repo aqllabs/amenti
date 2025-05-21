@@ -10,10 +10,10 @@ class QuizSubmission extends Model
     use HasFactory;
 
     protected $casts = [
-        'responses' => 'array'
+        'responses' => 'array',
     ];
 
-    protected  $guarded = [];
+    protected $guarded = [];
 
     public function quiz()
     {
@@ -21,5 +21,4 @@ class QuizSubmission extends Model
         return $this->belongsTo(Quiz::class, 'quiz_id');
 
     }
-
 }

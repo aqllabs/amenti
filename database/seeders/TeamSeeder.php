@@ -12,14 +12,14 @@ class TeamSeeder extends Seeder
 {
     public function run(): void
     {
-         if (! User::exists()) {
-             $this->call(UserSeeder::class);
-         }
+        if (! User::exists()) {
+            $this->call(UserSeeder::class);
+        }
 
-         User::all()->each(fn(User $user) => $user
-             ->teams()
-             ->save(
-                 Team::factory()->create(['user_id' => $user->getKey()]))
-            );
+        User::all()->each(fn (User $user) => $user
+            ->teams()
+            ->save(
+                Team::factory()->create(['user_id' => $user->getKey()]))
+        );
     }
 }

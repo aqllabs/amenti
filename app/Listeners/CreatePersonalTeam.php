@@ -21,18 +21,18 @@ class CreatePersonalTeam
      */
     public function handle(Registered $event): void
     {
-//        $user = $event->getUser();
-//
-//        if (Features::hasTeamFeatures()) {
-//            $team = Team::forceCreate([
-//                'user_id' => $user->id,
-//                'name' => explode(' ', $user->name, 2)[0] . "'s Team",
-//                'personal_team' => true,
-//            ]);
-//
-//            $user->ownedTeams()->save($team);
-//
-//            $user->switchTeam($team);
-//        }
+        //        $user = $event->getUser();
+        //
+        //        if (Features::hasTeamFeatures()) {
+        //            $team = Team::forceCreate([
+        //                'user_id' => $user->id,
+        //                'name' => explode(' ', $user->name, 2)[0] . "'s Team",
+        //                'personal_team' => true,
+        //            ]);
+        //
+        //            $user->ownedTeams()->save($team);
+        //
+        //            $user->switchTeam($team);
+        //        }
     }
 }

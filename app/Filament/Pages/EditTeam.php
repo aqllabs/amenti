@@ -16,7 +16,6 @@ class EditTeam extends EditTenantProfile
         return 'Team Settings';
     }
 
-
     protected function getViewData(): array
     {
         return [

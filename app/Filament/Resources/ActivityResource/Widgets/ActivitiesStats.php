@@ -9,8 +9,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class ActivitiesStats extends BaseWidget
 {
-    public Activity|null $record = null;
-
+    public ?Activity $record = null;
 
     protected function getStats(): array
     {
@@ -23,7 +22,7 @@ class ActivitiesStats extends BaseWidget
         $stats = [];
 
         foreach ($attendacesByStatus as $status => $count) {
-            $stats[] = Stat::make($status === '' ? "invited" : $status, $count);
+            $stats[] = Stat::make($status === '' ? 'invited' : $status, $count);
         }
 
         return [
@@ -31,5 +30,5 @@ class ActivitiesStats extends BaseWidget
         ];
     }
 
-    //count of attendaces grouped by status
+    // count of attendaces grouped by status
 }

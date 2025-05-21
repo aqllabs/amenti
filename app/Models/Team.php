@@ -45,25 +45,25 @@ class Team extends JetstreamTeam
         ];
     }
 
-    //courses
+    // courses
     public function courses()
     {
         return $this->hasMany(Course::class);
     }
 
-    //mentorships
+    // mentorships
     public function mentorships()
     {
         return $this->hasMany(Mentorship::class);
     }
 
-    //myforms
+    // myforms
     public function myForms()
     {
         return $this->hasMany(MyForm::class);
     }
 
-    //activities
+    // activities
     public function activities()
     {
         return $this->hasMany(Activity::class);

@@ -88,7 +88,7 @@ class MeetingResource extends Resource
                         TextEntry::make('feedback'),
                         TextEntry::make('rating'),
                         TextEntry::make('admin_feedback'),
-                    ])->grid(2)
+                    ])->grid(2),
                 ]
             ),
         ]);

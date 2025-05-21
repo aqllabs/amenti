@@ -12,8 +12,6 @@ use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class LessonsRelationManager extends RelationManager
@@ -38,10 +36,10 @@ class LessonsRelationManager extends RelationManager
                 Forms\Components\Section::make('Add Quiz')->schema(
                     [
                         Forms\Components\Group::make()
-                            ->relationship('quiz', condition: fn(Get $get) => $get('has_quiz'))
+                            ->relationship('quiz', condition: fn (Get $get) => $get('has_quiz'))
                             ->schema([
                                 Forms\Components\TextInput::make('description'),
-                                Forms\Components\Builder::make('structure')->label("Quiz content")->blocks([
+                                Forms\Components\Builder::make('structure')->label('Quiz content')->blocks([
                                     Forms\Components\Builder\Block::make('multiple_choice')
                                         ->schema([
                                             self::getHiddenUuid(),
@@ -53,7 +51,7 @@ class LessonsRelationManager extends RelationManager
                                                     ->label('Option')
                                                     ->required(),
                                                 Toggle::make('is_correct')->distinct(),
-                                            ])->minItems(1)
+                                            ])->minItems(1),
                                         ]),
                                     Forms\Components\Builder\Block::make('short_answer')
                                         ->schema([
@@ -75,16 +73,16 @@ class LessonsRelationManager extends RelationManager
                                                 ->label('Answer')
                                                 ->required(),
                                         ]),
-                                ])
-                            ])->columnSpanFull()
-                    ])
+                                ]),
+                            ])->columnSpanFull(),
+                    ]),
             ]);
     }
 
     protected static function getHiddenUuid()
     {
         return Hidden::make('id')
-            ->default(fn() => Str::uuid()->toString());
+            ->default(fn () => Str::uuid()->toString());
     }
 
     public function table(Table $table): Table
